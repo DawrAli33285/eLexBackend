@@ -385,6 +385,8 @@ module.exports.sendSignRequest = async (req, res) => {
       if(!recipient?.email){
         recipient=recipient._doc
       }
+      console.log('recipient')
+      console.log(recipient)
    
      
       const html = `<!DOCTYPE html>
@@ -1108,8 +1110,12 @@ module.exports.getNeedSignDocs=async(req,res)=>{
     let documents = await documentModel.aggregate([
       {
         $match: {
-          'signers.email':req.user.email,
-          'signers.signed':false,
+          signers: {
+            $elemMatch: {
+              email: req.user.email,
+              signed: false 
+            }
+          }
         }
       },
       { $sort: { createdAt: -1 } },
@@ -1138,10 +1144,12 @@ module.exports.getNeedSignDocs=async(req,res)=>{
       },
       { $unwind: "$owner" } 
     ]);
-
+console.log(req.user.email)
+ 
 
 return res.status(200).json({
-  documents
+  documents,
+  currentEmail:req.user.email
 })
 
 }catch(e){
