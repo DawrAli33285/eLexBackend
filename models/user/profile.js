@@ -6,7 +6,7 @@ const profileSchema=mongoose.Schema({
     },
     avatar:{
 type:String,
-default:'https://app.opensignlabs.com/static/media/dp.30e53f135742466a2060.png'
+default:'https://cdn.pixabay.com/photo/2014/03/25/15/23/user-296688_1280.png'
     },
     name:{
         type:String,
@@ -43,6 +43,10 @@ default:'https://app.opensignlabs.com/static/media/dp.30e53f135742466a2060.png'
     },
     initial:{
         type:String
+    },
+    verifyPhone:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true})
 

@@ -28,6 +28,7 @@
     "nodemon": "^3.1.9",
     "paypal-rest-sdk": "^1.8.1",
     "pdf-lib": "^1.17.1",
-    "stripe": "^17.7.0"
+    "stripe": "^17.7.0",
+    "twilio": "^5.6.1"
   }
 }

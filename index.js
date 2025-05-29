@@ -30,6 +30,9 @@ app.use((req, res, next) => {
     next();
 });
 
+app.get('/',(req,res)=>{
+  return res.send("Working")
+})
 app.use(authRoutes)
 app.use(documentRoutes)
 app.use(preferenceRoutes)

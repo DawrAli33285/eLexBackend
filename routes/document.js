@@ -1,5 +1,5 @@
 const router=require('express').Router();
-const {saveDocument,createDraft,createYourselfdraft,handleSaveAsTemplate,createSignTemplate,duplicateTemplate,saveTemplate,deleteDocument,deleteDraft,getDrafts,declineDocs,getCompletedDocs,getExpiredDocs,getDeclinedDocs,getInProgressDocs,getNeedSignDocs,deleteTemplate,getAllTemplates,assignEmailToRole,embedElementsInPDF,recentSentRequest,recentSignatureRequest,getSpecificDoc,getUserFiles,signDocument,sendSignRequest,getUserDocuments,editDocument}=require('../controller/user/document')
+const {saveDocument,createDraft,practiceSession,createYourselfdraft,handleSaveAsTemplate,createSignTemplate,duplicateTemplate,saveTemplate,deleteDocument,deleteDraft,getDrafts,declineDocs,getCompletedDocs,getExpiredDocs,getDeclinedDocs,getInProgressDocs,getNeedSignDocs,deleteTemplate,getAllTemplates,assignEmailToRole,embedElementsInPDF,recentSentRequest,recentSignatureRequest,getSpecificDoc,getUserFiles,signDocument,sendSignRequest,getUserDocuments,editDocument}=require('../controller/user/document')
 const {auth}=require('../middleware/auth')
 const uploadMulter=require('../middleware/file')
 router.post('/saveDocument',auth,uploadMulter.single("document"),saveDocument)
@@ -30,4 +30,5 @@ router.get('/getExpiredDocs',auth,getExpiredDocs)
 router.get('/getDrafts',auth,getDrafts)
 router.patch('/handleSaveAsTemplate/:id',handleSaveAsTemplate)
 router.delete('/deleteDraft/:docId',deleteDraft)
+router.post('/practiceSession',practiceSession)
 module.exports=router;

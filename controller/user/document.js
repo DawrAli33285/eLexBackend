@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Types } = require('mongoose');
+const { Types, default: mongoose } = require('mongoose');
 
 const cloudinary = require("cloudinary").v2;
 const moment=require('moment')
@@ -1584,4 +1584,21 @@ return res.status(200).json({
     error:"Something went wrong please try again"
   })
  } 
+}
+
+
+
+module.exports.practiceSession=async(req,res)=>{
+  let session=await mongoose.startSession();
+  try{
+
+session.startTransaction();
+
+console.log("WORKING")
+
+await session.commitTransaction();
+}catch(e){
+  await session.abortTransaction();
+
+} 
 }

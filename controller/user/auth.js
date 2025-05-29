@@ -6,6 +6,7 @@ const otpModel = require('../../models/user/otp');
 const profileModel = require('../../models/user/profile');
 const preferenceModel = require('../../models/user/preference');
 const  mongoose  = require('mongoose');
+const twilio = require('twilio');
 
 module.exports.register=async(req,res)=>{
 let {...data}=req.body;
@@ -307,14 +308,16 @@ module.exports.registerAndLogin=async(req,res)=>{
     }
 }
 
-module.exports.sendEmailVerificationLink=async(req,res)=>{
-   
-    try{
-let otp=Math.floor(Math.random()*9999)
-await otpModel.create({
-    otp,
-    email:req.user.email
-})
+    module.exports.sendEmailVerificationLink=async(req,res)=>{
+    
+        try{
+    let otp=Math.floor(Math.random()*9999)
+    await otpModel.create({
+        otp,
+        email:req.user.email
+    })
+
+    let user=await profileModel.findOne({user:req.user._id})
 
 const html=`
 <!DOCTYPE html>
@@ -364,6 +367,23 @@ const html=`
 </body>
 </html>
 `
+
+if (user.verifyPhone) {
+    const accountSid = 'AC8bdbbcf588ba5c6bd95824a1a969ee9f';
+    const authToken = 'a4d0ccd48ab73ea5ff3de9140dbbb3ef';
+    const client = require('twilio')(accountSid, authToken);
+    client.messages
+        .create({
+            to: user.phone,
+            from:'+19786933108',
+            body: `Your E-Lex Signature™ verification code is: ${otp}`,
+        })
+        .then(message => console.log(message.sid));
+        
+    return res.status(200).json({
+        message:"Verification request sent sucessfully"
+      })
+}
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -384,7 +404,7 @@ const transporter = nodemailer.createTransport({
     message:"Verification request sent sucessfully"
   })
     }catch(e){
-      
+      console.log(e.message)
         return res.status(400).json({
             error:"Something went wrong please try again"
         })
