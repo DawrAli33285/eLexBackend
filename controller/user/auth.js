@@ -43,35 +43,75 @@ return res.status(200).json({
 }
 
 
-
-module.exports.googleLogin=async(req,res)=>{
-    let {email}=req.body;
-    console.log(email)
-        try{
-            let emailFound=await userModel.findOne({email})
-            if(!emailFound){
-                return res.status(400).json({
-                    error:"Invalid email"
-                })
-            }
+module.exports.googleLogin = async (req, res) => {
+    let { email } = req.body;
+    console.log(email);
+    
+    try {
+        
+        let emailFound = await userModel.findOne({ email });
+        if (!emailFound) {
+            return res.status(400).json({
+                error: "Invalid email"
+            });
+        }
+      
+        let profile = await profileModel.findOne({ user: emailFound._id });
+        
+      
+        if (!profile) {
+            console.log(`No profile found for user ${emailFound._id}, creating default profile`);
             
-           
-         let profile=await profileModel.findOne({user:emailFound._id})
-            let token=await jwt.sign({user:emailFound,profile},process.env.JWT_KEY)
-            return res.status(200).json({
-                user:emailFound,
-                token
-            })
-           
           
+            const defaultName = email.split('@')[0];
             
-    }catch(e){
-       console.log(e.message)
-        return res.status(400).json({
-            error:"Something went wrong please try again"
-        })
-    }   
+            profile = await profileModel.create({
+                user: emailFound._id,
+                name: defaultName,
+                phone: '', 
+                company: '', 
+                job_title: '', 
+                avatar: 'https://cdn.pixabay.com/photo/2014/03/25/15/23/user-296688_1280.png',
+                is_email_verified: false,
+                language: 'English',
+                verifyPhone: false
+            });
+            
+            console.log('Default profile created:', profile._id);
+        }
+        
+    
+        let token = await jwt.sign(
+            { 
+                user: emailFound, 
+                profile: profile 
+            }, 
+            process.env.JWT_KEY,
+        );
+        
+        return res.status(200).json({
+            user: emailFound,
+            profile: profile,
+            token
+        });
+        
+    } catch (e) {
+        console.error('Google login error:', e.message);
+        console.error('Stack trace:', e.stack);
+        
+      
+        if (e.name === 'ValidationError') {
+            const errors = Object.values(e.errors).map(err => err.message);
+            return res.status(400).json({
+                error: `Profile creation failed: ${errors.join(', ')}`
+            });
+        }
+        
+        return res.status(500).json({
+            error: "Something went wrong please try again"
+        });
     }
+};
     
 
 
