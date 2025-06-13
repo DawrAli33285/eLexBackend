@@ -31,6 +31,8 @@ module.exports.saveDocument = async (req, res) => {
         ...data,
         signers:JSON.parse(data.signers)
       }
+      console.log("HAVESIGNEDLEFT")
+      console.log(req.profile)
       let haveSignedLeft=await subscriptionModel.findOne({user:req.profile._id})
       if(!haveSignedLeft){
 return res.status(400).json({

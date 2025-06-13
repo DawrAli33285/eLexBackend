@@ -9,7 +9,8 @@ if(req?.headers?.authorization?.startsWith('Bearer')){
     let user=jwt.verify(token,process.env.JWT_KEY)
     req.user=user.user
     req.profile=user.profile
-   
+   console.log(req.profile)
+   console.log("MIDDLEWARE PROFILE")
     next()
 }else{
     return res.status(400).json({
