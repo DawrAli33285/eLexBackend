@@ -48,28 +48,23 @@ module.exports.googleLogin=async(req,res)=>{
     let {email}=req.body;
     console.log(email)
         try{
-    let emailFound=await userModel.findOne({email})
-    
-  
-    if(!emailFound){
-        console.log('no record')
-        return res.status(400).json({
-            error:"Invalid email"
-        })
-    }
-    
-    
-    let profile=await profileModel.findOne({user:emailFound._id})
-
-    const userObject = emailFound.toObject(); 
-const profileObject = profile ? profile.toObject() : null;
-let token = jwt.sign({ user: userObject, profile: profileObject }, process.env.JWT_KEY);
-    
-    return res.status(200).json({
-        user:emailFound,
-        token
-    })
-    
+            let emailFound=await userModel.findOne({email})
+            if(!emailFound){
+                return res.status(400).json({
+                    error:"Invalid email"
+                })
+            }
+            
+           
+         let profile=await profileModel.findOne({user:emailFound._id})
+            let token=await jwt.sign({user:emailFound,profile},process.env.JWT_KEY)
+            return res.status(200).json({
+                user:emailFound,
+                token
+            })
+           
+          
+            
     }catch(e){
        console.log(e.message)
         return res.status(400).json({
