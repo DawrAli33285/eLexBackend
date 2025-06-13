@@ -128,6 +128,29 @@ if(!emailFound){
 let passwordMatch=password==emailFound.password
 if(passwordMatch){
     let profile=await profileModel.findOne({user:emailFound._id})
+
+    if (!profile) {
+        console.log(`No profile found for user ${emailFound._id}, creating default profile`);
+        
+      
+        const defaultName = email.split('@')[0];
+        
+        profile = await profileModel.create({
+            user: emailFound._id,
+            name: defaultName,
+            phone: '', 
+            company: '', 
+            job_title: '', 
+            avatar: 'https://cdn.pixabay.com/photo/2014/03/25/15/23/user-296688_1280.png',
+            is_email_verified: false,
+            language: 'English',
+            verifyPhone: false
+        });
+        
+        console.log('Default profile created:', profile._id);
+    }
+
+    
 let token=await jwt.sign({user:emailFound,profile},process.env.JWT_KEY)
 return res.status(200).json({
     user:emailFound,
