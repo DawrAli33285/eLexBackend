@@ -6,9 +6,12 @@ module.exports.auth=async(req,res,next)=>{
 if(req?.headers?.authorization?.startsWith('Bearer')){
    
     let token=req?.headers?.authorization?.split(' ')[1]
+    console.log("TOKEN")
+    console.log(token)
     let user=jwt.verify(token,process.env.JWT_KEY)
     req.user=user.user
     req.profile=user.profile
+    console.log(user)
    console.log(req.profile)
    console.log("MIDDLEWARE PROFILE")
     next()
