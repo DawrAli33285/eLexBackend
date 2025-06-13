@@ -11,7 +11,7 @@ if(req?.headers?.authorization?.startsWith('Bearer')){
     let user=jwt.verify(token,process.env.JWT_KEY)
     req.user=user.user
     req.profile=user.profile
-    console.log(user)
+    console.log(req.user)
    console.log(req.profile)
    console.log("MIDDLEWARE PROFILE")
     next()
