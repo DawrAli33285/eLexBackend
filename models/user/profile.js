@@ -10,19 +10,19 @@ default:'https://cdn.pixabay.com/photo/2014/03/25/15/23/user-296688_1280.png'
     },
     name:{
         type:String,
-        required:true
+     
     },
     phone:{
         type:String,
-        required:true
+       
     },
     company:{
         type:String,
-        required:true
+   
     },
     job_title:{
         type:String,
-        required:true
+      
     },
     is_email_verified:{
         type:Boolean,
