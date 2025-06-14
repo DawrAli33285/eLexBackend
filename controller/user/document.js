@@ -1626,7 +1626,7 @@ try{
   await client.messages.create({
     body: `${link}`,
     from: 'whatsapp:+14155238886',
-    to: 'whatsapp:+923105154625'
+    to: `whatsapp:${phone}`
   });
 return res.status(200).json({
   message:"Request link sent sucessfully"
