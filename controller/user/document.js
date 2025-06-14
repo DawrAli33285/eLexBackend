@@ -2,6 +2,7 @@ const fs = require("fs");
 const { Types, default: mongoose } = require('mongoose');
 
 const cloudinary = require("cloudinary").v2;
+const twilio = require('twilio');
 const moment=require('moment')
 const { PDFDocument, rgb } = require("pdf-lib");
 const path = require("path");
@@ -1603,4 +1604,36 @@ await session.commitTransaction();
   await session.abortTransaction();
 
 } 
+}
+
+
+
+
+module.exports.sendSignatureLinkToWhatsApp=async(req,res)=>{
+try{
+  const { phone,link} = req.body;
+
+  if (!phone || !/^\+\d{7,15}$/.test(phone)) {
+    return res.status(400).json({
+      error: "Invalid phone number format. Please use international format (+[country code][number])"
+    });
+  }
+  const client = twilio(
+   "AC8bdbbcf588ba5c6bd95824a1a969ee9f",
+    "a4d0ccd48ab73ea5ff3de9140dbbb3ef"
+  );
+
+  await client.messages.create({
+    body: `${link}`,
+    from: 'whatsapp:+14155238886',
+    to: 'whatsapp:+923105154625'
+  });
+return res.status(200).json({
+  message:"Request link sent sucessfully"
+})
+}catch(e){
+return res.status(400).json({
+  error:"Something went wrong please try again"
+})
+}
 }
