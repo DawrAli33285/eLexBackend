@@ -9,11 +9,12 @@ if(req?.headers?.authorization?.startsWith('Bearer')){
     console.log("TOKEN")
     console.log(token)
     let user=jwt.verify(token,process.env.JWT_KEY)
+    console.log("USER FOUND")
+    console.log(user)
+    console.log("PROFILE")
+    console.log(profile)
     req.user=user.user
     req.profile=user.profile
-    console.log(req.user)
-   console.log(req.profile)
-   console.log("MIDDLEWARE PROFILE")
     next()
 }else{
     return res.status(400).json({
@@ -21,7 +22,8 @@ if(req?.headers?.authorization?.startsWith('Bearer')){
     })
 }
     }catch(e){
-   
+   console.log("AUTH ERROR")
+   console.log(e.message)
 return res.status(400).json({
     error:"Something went wrong please try again"
 })
