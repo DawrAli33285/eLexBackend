@@ -504,10 +504,15 @@ module.exports.getSpecificDoc = async (req, res) => {
 
   try {
     let doc = await documentModel.findById(docId);
+    console.log("DOC FOUND IS")
+    console.log(doc)
+    console.log(docId)
     return res.status(200).json({
       doc,
     });
   } catch (e) {
+    console.log("DOC giving error")
+    console.log(e.message)
     return res.status(400).json({
       error: "Something went wrong please try again",
     });
