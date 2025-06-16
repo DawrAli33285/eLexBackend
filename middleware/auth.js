@@ -8,7 +8,7 @@ if(req?.headers?.authorization?.startsWith('Bearer')){
     let token=req?.headers?.authorization?.split(' ')[1]
     console.log("TOKEN")
     console.log(token)
-    let user=jwt.verify(token,process.env.JWT_KEY)
+    let user=jwt.verify(token,"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB")
     console.log("USER FOUND")
     console.log(user)
     console.log("PROFILE")
