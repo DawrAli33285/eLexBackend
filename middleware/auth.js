@@ -9,7 +9,7 @@ if(req?.headers?.authorization?.startsWith('Bearer')){
     let token=req?.headers?.authorization?.split(' ')[1]
     console.log("TOKEN")
     console.log(token)
-    let user=jwt.verify(token,"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB")
+    let user=jwt.verify(token,process.env.JWT_KEY)
     console.log("USER FOUND")
     console.log(user)
     if(user?.user){
