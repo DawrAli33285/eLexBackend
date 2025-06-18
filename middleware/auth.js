@@ -1,7 +1,8 @@
 const jwt=require('jsonwebtoken')
 
 module.exports.auth=async(req,res,next)=>{
-   
+   console.log("TOKEN BEFORE REQ is")
+   console.log(req.headers.authorization)
     try{
 if(req?.headers?.authorization?.startsWith('Bearer')){
    
