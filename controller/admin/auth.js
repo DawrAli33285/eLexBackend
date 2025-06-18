@@ -37,7 +37,7 @@ return res.status(400).json({
 let passwordMatch=await adminModel.findOne({password:data.password})
 if(passwordMatch){
     return res.status(200).json({
-        token:process.env.JWT_KEY
+        token:"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB"
     })
 }else{
     return res.status(400).json({

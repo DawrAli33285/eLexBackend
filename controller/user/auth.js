@@ -86,7 +86,7 @@ module.exports.googleLogin = async (req, res) => {
                 user: emailFound, 
                 profile: profile 
             }, 
-            process.env.JWT_KEY,
+            "SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB",
         );
         
         return res.status(200).json({
@@ -151,7 +151,7 @@ if(passwordMatch){
     }
 
     
-let token=await jwt.sign({user:emailFound,profile},process.env.JWT_KEY)
+let token=await jwt.sign({user:emailFound,profile},"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB")
 return res.status(200).json({
     user:emailFound,
     token
@@ -326,7 +326,7 @@ module.exports.registerAndLogin=async(req,res)=>{
     
     if(userFound){
         let profile=await profileModel.findOne({user:userFound._id})
-        let token=await jwt.sign({user:userFound,profile},process.env.JWT_KEY)
+        let token=await jwt.sign({user:userFound,profile},"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB")
         let preference=await preferenceModel.findOne({user:userFound._id})
         return res.status(200).json({
             user:userFound,
@@ -348,7 +348,7 @@ module.exports.registerAndLogin=async(req,res)=>{
     }
     
    let profile=await profileModel.create(data)
-    let token=await jwt.sign({user:userCreated,profile},process.env.JWT_KEY)
+    let token=await jwt.sign({user:userCreated,profile},"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB")
     let preference=await preferenceModel.create({user:userCreated._id})
     return res.status(200).json({
         user:userCreated,
