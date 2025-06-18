@@ -11,10 +11,10 @@ if(req?.headers?.authorization?.startsWith('Bearer')){
     let user=jwt.verify(token,"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB")
     console.log("USER FOUND")
     console.log(user)
-    console.log("PROFILE")
-    console.log(req.profile)
     req.user=user.user
     req.profile=user.profile
+    console.log("PROFILE")
+    console.log(req.profile)
     next()
 }else{
     return res.status(400).json({
