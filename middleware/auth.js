@@ -12,7 +12,7 @@ if(req?.headers?.authorization?.startsWith('Bearer')){
     console.log("USER FOUND")
     console.log(user)
     console.log("PROFILE")
-    console.log(profile)
+    console.log(req.profile)
     req.user=user.user
     req.profile=user.profile
     next()
