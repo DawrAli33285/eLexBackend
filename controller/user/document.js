@@ -1642,3 +1642,253 @@ return res.status(400).json({
 })
 }
 }
+
+
+
+
+
+
+
+
+module.exports.contactUs=async(req,res)=>{
+  let {firstName,lastName,email,phoneNumber,message}=req.body;
+  try{
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "susolamin@gmail.com",
+        pass: "rexsrzkvuuntceiq",
+      },
+    });
+let html=`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact Form Submission</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .email-container {
+            background-color: #ffffff;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .content {
+            padding: 30px 20px;
+        }
+        
+        .alert {
+            background-color: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        
+        .alert-text {
+            color: #155724;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .info-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            min-width: 120px;
+            margin-right: 15px;
+        }
+        
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+        
+        .message-section {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .message-title {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .message-content {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .footer p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 12px;
+        }
+        
+        .timestamp {
+            color: #6c757d;
+            font-size: 12px;
+            text-align: right;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .contact-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .info-row {
+                flex-direction: column;
+            }
+            
+            .info-label {
+                margin-bottom: 5px;
+                min-width: auto;
+            }
+            
+            .email-container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🔔 New Contact Form Submission</h1>
+            <p>Someone has reached out through your website</p>
+        </div>
+        
+        <div class="content">
+            <div class="alert">
+                <p class="alert-text">New message received from your contact form</p>
+            </div>
+            
+            <div class="info-section">
+                <div class="info-row">
+                    <div class="info-label">Name:</div>
+                    <div class="info-value">${firstName} ${lastName}</div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">Email:</div>
+                    <div class="info-value">
+                        <a href="mailto:${email}" class="contact-link">${email}</a>
+                    </div>
+                </div>
+                
+                <div class="info-row">
+                    <div class="info-label">Phone:</div>
+                    <div class="info-value">
+                       
+                            <a href="tel:${phoneNumber}" class="contact-link">${phoneNumber}</a>
+                     
+                      
+                    </div>
+                </div>
+            </div>
+            
+            <div class="message-section">
+                <div class="message-title">📝 Message:</div>
+                <div class="message-content">${message}</div>
+            </div>
+            
+           
+        </div>
+        
+        <div class="footer">
+            <p>This email was automatically generated from your website's contact form.</p>
+            <p>Please respond directly to the sender's email address.</p>
+        </div>
+    </div>
+</body>
+</html>
+`
+    await transporter.sendMail({
+      from: "susolamin@gmail.com",
+      to: email,
+      subject: "Signature Request - E-Lex Signature™",
+      html: html,
+    });
+    return res.status(200).json({
+      message:"Mail sent sucessfully"
+    })
+  }catch(e){
+    return res.status(400).json({
+      error:"Something went wrong please try again"
+    })
+    }  
+}

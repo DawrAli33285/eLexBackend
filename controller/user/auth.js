@@ -317,55 +317,76 @@ return res.status(200).json({
     }
 }
 
-module.exports.registerAndLogin=async(req,res)=>{
-    let {...data}=req.body;
-    let email=data.email
-    let password=`${Math.random()*9999}+${email}`
-        try{
-    let userFound=await userModel.findOne({email})
-    
-    if(userFound){
-        let profile=await profileModel.findOne({user:userFound._id})
-        let token=await jwt.sign({user:userFound,profile},"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB")
-        let preference=await preferenceModel.findOne({user:userFound._id})
+module.exports.registerAndLogin = async (req, res) => {
+    try {
+       
+        const data = req.body || {};
+        const email = data.email;
+        
+       
+        if (!email) {
+            return res.status(400).json({
+                error: "Email is required"
+            });
+        }
+
+        const password = `${Math.random() * 9999}+${email}`;
+      
+        const userFound = await userModel.findOne({ email });
+        
+        if (userFound) {
+            const profile = await profileModel.findOne({ user: userFound._id });
+            const preference = await preferenceModel.findOne({ user: userFound._id });
+            
+            const token = jwt.sign(
+                { user: userFound, profile }, 
+                process.env.JWT_SECRET || "your-fallback-secret-key",
+                { expiresIn: '24h' } 
+            );
+            
+            return res.status(200).json({
+                user: userFound,
+                profile, 
+                token,
+                preference
+            });
+        }
+        
+       
+        const userCreated = await userModel.create({ email, password });
+        
+        const profileData = {
+            ...data,
+            job_title: data.job_title || 'my job',
+            company: data.company || 'my company',
+            phone: data.phone || '+923105162',
+            name: data.name || 'new user',
+            user: userCreated._id
+        };
+        
+        const profile = await profileModel.create(profileData);
+        const preference = await preferenceModel.create({ user: userCreated._id });
+        
+        const token = jwt.sign(
+            { user: userCreated, profile }, 
+            process.env.JWT_SECRET || "your-fallback-secret-key",
+            { expiresIn: '24h' }
+        );
+        
         return res.status(200).json({
-            user:userFound,
+            user: userCreated,
+            profile, 
             token,
             preference
-        })
-      
+        });
+        
+    } catch (e) {
+        console.error('registerAndLogin error:', e); 
+        return res.status(500).json({
+            error: "Something went wrong, please try again"
+        });
     }
-    
-     
-      let userCreated=await userModel.create({email,password})
-    data={
-        ...data,
-        job_title:'my job',
-        company:'my company',
-        phone:'+923105162',
-        name:'new user',
-        user:userCreated._id
-    }
-    
-   let profile=await profileModel.create(data)
-    let token=await jwt.sign({user:userCreated,profile},"SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB")
-    let preference=await preferenceModel.create({user:userCreated._id})
-    return res.status(200).json({
-        user:userCreated,
-        token,
-        preference
-    })
-   
-    
-    }catch(e){
-       
-       
-        return res.status(400).json({
-            error:"Something went wrong please try again"
-        })
-    }
-}
-
+};
     module.exports.sendEmailVerificationLink=async(req,res)=>{
     
         try{

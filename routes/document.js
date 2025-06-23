@@ -1,5 +1,5 @@
 const router=require('express').Router();
-const {saveDocument,createDraft,practiceSession,sendSignatureLinkToWhatsApp,createYourselfdraft,handleSaveAsTemplate,createSignTemplate,duplicateTemplate,saveTemplate,deleteDocument,deleteDraft,getDrafts,declineDocs,getCompletedDocs,getExpiredDocs,getDeclinedDocs,getInProgressDocs,getNeedSignDocs,deleteTemplate,getAllTemplates,assignEmailToRole,embedElementsInPDF,recentSentRequest,recentSignatureRequest,getSpecificDoc,getUserFiles,signDocument,sendSignRequest,getUserDocuments,editDocument}=require('../controller/user/document')
+const {saveDocument,createDraft,contactUs,practiceSession,sendSignatureLinkToWhatsApp,createYourselfdraft,handleSaveAsTemplate,createSignTemplate,duplicateTemplate,saveTemplate,deleteDocument,deleteDraft,getDrafts,declineDocs,getCompletedDocs,getExpiredDocs,getDeclinedDocs,getInProgressDocs,getNeedSignDocs,deleteTemplate,getAllTemplates,assignEmailToRole,embedElementsInPDF,recentSentRequest,recentSignatureRequest,getSpecificDoc,getUserFiles,signDocument,sendSignRequest,getUserDocuments,editDocument}=require('../controller/user/document')
 const {auth}=require('../middleware/auth')
 const uploadMulter=require('../middleware/file')
 router.post('/saveDocument',auth,uploadMulter.single("document"),saveDocument)
@@ -14,7 +14,7 @@ router.patch('/editDocument/:docId',auth,uploadMulter.single("document"),editDoc
 router.delete('/deleteDocument/:id',auth,deleteDocument)
 router.post('/sendSignRequest',auth,sendSignRequest)
 router.post('/duplicateTemplate',auth,duplicateTemplate)
-router.get('/getSpecificDoc/:docId',auth,getSpecificDoc)
+router.get('/getSpecificDoc/:docId',getSpecificDoc)
 router.patch('/signDocument',auth,signDocument)
 router.post('/createDraft',auth,uploadMulter.single('document'),createDraft)
 router.post('/createYourselfdraft',auth,uploadMulter.single('document'),createYourselfdraft)
@@ -32,4 +32,5 @@ router.patch('/handleSaveAsTemplate/:id',handleSaveAsTemplate)
 router.delete('/deleteDraft/:docId',deleteDraft)
 router.post('/practiceSession',practiceSession)
 router.post('/sendSignatureLinkToWhatsApp',sendSignatureLinkToWhatsApp)
+router.post('/contactus',contactUs)
 module.exports=router;
