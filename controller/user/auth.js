@@ -29,7 +29,7 @@ data={
 }
 
 await profileModel.create(data)
-await preferenceModel.create({user:userCreated._id})
+await preferenceModel.create({user:userCreated._id,allowed_signature_types:'all',notify_on_signatures:true,timezone:'',date_format:'12 hr',send_in_order:false})
 return res.status(200).json({
     message:"User registered sucessfully"
 })

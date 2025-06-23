@@ -676,7 +676,7 @@ console.log(doc.signers)
 
 console.log(info)
 console.log("INFO")
-  if(preferences.notify_on_signatures){
+  if(preferences?.notify_on_signatures){
     console.log("sending")
     await transporter.sendMail({
       from: "susolamin@gmail.com",
