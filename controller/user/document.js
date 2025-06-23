@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { Types, default: mongoose } = require('mongoose');
 
+
 const cloudinary = require("cloudinary").v2;
 const twilio = require('twilio');
 const moment=require('moment')
@@ -1654,13 +1655,7 @@ module.exports.contactUs=async(req,res)=>{
   let {firstName,lastName,email,phoneNumber,message}=req.body;
   try{
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "susolamin@gmail.com",
-        pass: "rexsrzkvuuntceiq",
-      },
-    });
+   
 let html=`
 <!DOCTYPE html>
 <html lang="en">
@@ -1877,16 +1872,9 @@ let html=`
 </body>
 </html>
 `
-    await transporter.sendMail({
-      from: "susolamin@gmail.com",
-      to: email,
-      subject: "Signature Request - E-Lex Signature™",
-      html: html,
-    });
-    return res.status(200).json({
-      message:"Mail sent sucessfully"
-    })
+
   }catch(e){
+    console.log(e.message)
     return res.status(400).json({
       error:"Something went wrong please try again"
     })
