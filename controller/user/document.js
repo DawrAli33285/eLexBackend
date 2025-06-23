@@ -697,7 +697,8 @@ console.log("INFO")
       message: "Document signed sucessfully",
     });
   } catch (e) {
-   
+    console.log("SIGN IN ERROR")
+   console.log(e.messsage)
     return res.status(400).json({
       error: "Something went wrong please try again",
     });
