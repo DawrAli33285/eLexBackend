@@ -340,7 +340,7 @@ module.exports.registerAndLogin = async (req, res) => {
             
             const token = jwt.sign(
                 { user: userFound, profile }, 
-                process.env.JWT_SECRET || "your-fallback-secret-key",
+               "SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB",
                 { expiresIn: '24h' } 
             );
             
@@ -369,7 +369,7 @@ module.exports.registerAndLogin = async (req, res) => {
         
         const token = jwt.sign(
             { user: userCreated, profile }, 
-            process.env.JWT_SECRET || "your-fallback-secret-key",
+            "SDAFJFSJFGSJFJSFISDIFSIFIS*$#*@$*@#$@#FDSFSFOSDFOSOFOFOAOFOADPASPCKB",
             { expiresIn: '24h' }
         );
         
