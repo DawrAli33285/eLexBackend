@@ -698,7 +698,7 @@ console.log("INFO")
     });
   } catch (e) {
     console.log("SIGN IN ERROR")
-   console.log(e.messsage)
+    console.log(e.message)
     return res.status(400).json({
       error: "Something went wrong please try again",
     });
