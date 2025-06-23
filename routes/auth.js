@@ -1,5 +1,5 @@
 const router=require('express').Router();
-const {register,login,googleLogin,getUser,registerAndLogin,updatePassword,sendEmailVerificationLink,verifyEmail,resetPassword,sendPasswordResetLinks}=require('../controller/user/auth')
+const {register,login,googleLogin,getUserByEmail,getUser,registerAndLogin,updatePassword,sendEmailVerificationLink,verifyEmail,resetPassword,sendPasswordResetLinks}=require('../controller/user/auth')
 const {auth}=require('../middleware/auth')
 
 router.post('/register',register)
@@ -12,4 +12,5 @@ router.post('/sendEmailVerificationLink',auth,sendEmailVerificationLink)
 router.post('/verifyEmail',auth,verifyEmail)
 router.post('/registerAndLogin',registerAndLogin)
 router.get('/getUser',auth,getUser)
+router.get('/getUser/:email',getUserByEmail)
 module.exports=router;

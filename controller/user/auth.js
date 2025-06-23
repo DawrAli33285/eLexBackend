@@ -544,3 +544,25 @@ return res.status(200).json({
         })
     }
 }
+
+
+
+
+module.exports.getUserByEmail=async(req,res)=>{
+let {email}=req.params;
+    try{
+        let user=await userModel.findOne({email})
+        let preference=await preferenceModel.findOne({user:user._id})
+        let profile=await profileModel.findOne({user:user._id})
+        return res.status(200).json({
+            user,
+            preference,
+            profile
+        })
+
+    }catch(e){
+        return res.status(400).json({
+            error:"Something went wrong please try again"
+        })
+    }
+}
