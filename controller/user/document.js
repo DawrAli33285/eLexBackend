@@ -1869,12 +1869,15 @@ const transporter = nodemailer.createTransport({
 
 
 
-await transporter.sendMail({
+const info = await transporter.sendMail({
   from: "susolamin@gmail.com",
-  to: 'susolamin@icloud.com',
+  to: "susolamin@icloud.com",
   subject: "Signature Request - E-Lex Signature™",
   html: html,
 });
+
+console.log("✅ Email sent successfully!");
+console.log("Message ID:", info.messageId);
 
 return res.status(200).json({
   message:"Sucessfully sent to support"
