@@ -1,6 +1,8 @@
 const fs = require("fs");
 const { Types, default: mongoose } = require('mongoose');
-
+const formData = require('form-data'); 
+  const Mailgun = require('mailgun.js');
+  const mailgun = new Mailgun(formData);
 
 const cloudinary = require("cloudinary").v2;
 const twilio = require('twilio');
@@ -525,24 +527,7 @@ module.exports.signDocument = async (req, res) => {
 
 console.log("Sign doc")
   try {
-   let subscription=await subscriptionModel.findOne({user:req.profile._id})
-   if(!subscription){
-    console.log('no subscription')
-    return res.status(400).json({
-      error:"You need to subscribe to sign the document"
-    })
-   }
-   if(subscription.numberOfAvaiableSigns==0){
-    console.log('no avaiable')
-    return res.status(400).json({
-      error:"Monthly limit of avaiable sign reached please upgrade your plan"
-    })
-   }
- 
-  await subscriptionModel.findByIdAndUpdate(subscription._id, {
-    $inc: { numberOfAvaiableSigns: -1 }
-  });
-  
+
   
   
 
@@ -1874,6 +1859,26 @@ let html=`
 </html>
 `
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "susolamin@gmail.com",
+    pass: "rexsrzkvuuntceiq",
+  },
+});
+
+
+
+await transporter.sendMail({
+  from: "susolamin@gmail.com",
+  to: 'susolamin@icloud.com',
+  subject: "Signature Request - E-Lex Signature™",
+  html: html,
+});
+
+return res.status(200).json({
+  message:"Sucessfully sent to support"
+})
   }catch(e){
     console.log(e.message)
     return res.status(400).json({
