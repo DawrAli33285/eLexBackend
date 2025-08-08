@@ -687,7 +687,9 @@ console.log("INFO")
       ],
     });
 
-    if(doc?.copyholders?.length>0){
+    
+  }
+  if(doc?.copyholders?.length>0){
     for(let n=0;n<doc?.copyholders?.length;n++){
       await transporter.sendMail({
         from: "susolamin@gmail.com",
@@ -705,7 +707,6 @@ console.log("INFO")
     }
    
     }
-  }
     }
     return res.status(200).json({
       message: "Document signed sucessfully",
