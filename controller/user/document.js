@@ -457,28 +457,38 @@ module.exports.sendSignRequest = async (req, res) => {
           error: "Max number of monthly emails reached please upgrade your plan"
         });
       }
-      await transporter.sendMail({
-        from: "susolamin@gmail.com",
-        to: recipient.email,
-        subject: "Signature Request - E-Lex Signature™",
-        html: html,
-      });
+if(val.willSign==true){
+  await transporter.sendMail({
+    from: "susolamin@gmail.com",
+    to: recipient.email,
+    subject: "Signature Request - E-Lex Signature™",
+    html: html,
+  });
 
+  
+  await subscriptionModel.updateOne({user:req.profile._id},{
+    $inc: {  numberOfAvaiableEmails: -1 }
+  });
+
+ 
+
+
+  await documentModel.updateOne(
+    { _id: documentId },
+    {
+      $push: { signers: { email: recipient.email, name: recipient.name} },
+      $set: { status: "sent" }
+    }
+  );
+}else{
+  await documentModel.updateOne(
+    { _id: documentId },
+    {
+      $push: { copyholders: { email: recipient.email, name: recipient.name} },
       
-      await subscriptionModel.updateOne({user:req.profile._id},{
-        $inc: {  numberOfAvaiableEmails: -1 }
-      });
-
-     
-
-   
-      await documentModel.updateOne(
-        { _id: documentId },
-        {
-          $push: { signers: { email: recipient.email, name: recipient.name} },
-          $set: { status: "sent" }
-        }
-      );
+    }
+  );
+}
     }
 
     
@@ -676,6 +686,25 @@ console.log("INFO")
         },
       ],
     });
+
+    if(doc?.copyholders?.length>0){
+    for(let n=0;n<doc?.copyholders?.length;n++){
+      await transporter.sendMail({
+        from: "susolamin@gmail.com",
+        to: doc?.copyholders[n]?.email,
+        subject: `Document "${doc.title}" has been signed by all parties`,
+        html: html,
+        attachments: [
+          {
+            filename: `${doc.title}`,
+            path: doc.file,
+            contentType: "application/pdf",
+          },
+        ],
+      });
+    }
+   
+    }
   }
     }
     return res.status(200).json({
