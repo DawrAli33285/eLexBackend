@@ -16,7 +16,8 @@ return res.status(200).json({
     }catch(e){
       
         return res.status(400).json({
-            error:"Something went wrong please try again"
+            error:"Something went wrong please try again",
+            serverError:e.message
         })
     }
 }
